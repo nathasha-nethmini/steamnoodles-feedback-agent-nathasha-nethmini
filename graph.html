@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Steam Noodles Sentiment Graph</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+            color: rgb(254, 252, 252);
+            text-shadow:
+                -2px -2px 0 black,
+                2px -2px 0 black,
+                -2px 2px 0 black,
+                2px 2px 0 black;
+            background-image: url('https://i.pinimg.com/736x/94/f6/a2/94f6a24e339e70e297d41b5e7b66e54e.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        img {
+            max-width: 90%;
+            margin-top: 20px;
+            border: 2px solid rgb(11, 11, 11);
+            border-radius: 8px;
+        }
+
+        input {
+            padding: 8px;
+            width: 220px;
+            margin-right: 10px;
+            background-color: #8bc2b2;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: #64998b;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Steam Noodles Sentiment Graph</h1>
+    <div>
+        <input type="text" id="dateRange" placeholder="e.g. last 7 days or 2025-08-01 to 2025-08-07">
+        <button onclick="loadGraph()">Show Graph</button>
+    </div>
+    <div>
+        <img id="sentimentGraph" src="/sentiment-graph" alt="Sentiment Graph">
+    </div>
+    <script>
+        function loadGraph() {
+            const range = document.getElementById('dateRange').value.trim();
+            const img = document.getElementById('sentimentGraph');
+            const url = range ? `/sentiment-graph?range=${encodeURIComponent(range)}` : '/sentiment-graph';
+            img.src = url + '&t=' + new Date().getTime();  // prevent caching
+        }
+    </script>
+</body>
+
+</html>

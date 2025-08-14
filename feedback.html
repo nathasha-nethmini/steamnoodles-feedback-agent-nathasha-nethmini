@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Steam Noodles Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://i0.wp.com/everpeckish.com/wp-content/uploads/2020/10/ever-peckish_Asian-Noodle-6.jpg?w=720&ssl=1');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: rgb(244, 212, 196);
+            text-shadow: 1px 1px 2px rgb(12, 0, 0);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: rgb(253, 251, 250);
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: rgba(0, 128, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .link-graph {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #f9ede7;
+            text-decoration: underline;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Leave Your Feedback for Steam Noodles 🍜</h1>
+        <textarea id="feedback" placeholder="Write your review here..."></textarea>
+        <button onclick="submitFeedback()">Submit Feedback</button>
+        <div class="message" id="message"></div>
+        <a href="/graph-page" target="_blank" class="link-graph">📊 See Sentiment Graph</a>
+    </div>
+    <script>
+        async function submitFeedback() {
+            const feedbackText = document.getElementById('feedback').value;
+            if (!feedbackText.trim()) { alert("Please enter feedback!"); return; }
+
+            const btn = document.querySelector("button");
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/submit-feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ feedback: feedbackText })
+                });
+                let data;
+                try { data = await response.json(); }
+                catch { data = { message: "Server returned non-JSON response" }; }
+
+                document.getElementById('message').innerText = data.message || "Feedback submitted!";
+                document.getElementById('feedback').value = '';
+            } catch (err) {
+                document.getElementById('message').innerText = "Error submitting feedback.";
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>

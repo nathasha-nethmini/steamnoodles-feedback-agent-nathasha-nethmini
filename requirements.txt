@@ -1,0 +1,9 @@
+flask
+pandas
+matplotlib
+seaborn
+plotly
+langchain
+langchain-groq
+python-dotenv
+dateparser
